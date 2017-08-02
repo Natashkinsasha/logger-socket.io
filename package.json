@@ -13,6 +13,7 @@
     "slogged": "^1.1.1",
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.3",
-    "socket.io-events": "^0.4.6"
+    "socket.io-events": "^0.4.6",
+    "winston": "^2.3.1"
   }
 }

@@ -6,7 +6,16 @@ describe('', function () {
     const socket = socketClient('http://localhost:3000/endpoint');
     describe('', function () {
         it('', function (done) {
-            socket.emit('event', {test:'test'})
+            socket.emit('fox', {tiger: 'tiger'}, function () {
+                socket.emit('stork', {bear: 'bear'});
+            });
+            socket.on('frog', function () {
+                socket.disconnect();
+            });
+
+            /*socket.on('disconnect', function () {
+                done();
+            })*/
         });
     });
 });
