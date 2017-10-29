@@ -21,7 +21,7 @@ const logger = new (winston.Logger)({
     ],
 });
 
-io.of('/endpoint').use(tmp(logger));
+io.of('/endpoint').use(tmp());
 
 io.of('/endpoint').on('connection', function (client) {
     client.on('fox', function (tiger, ack) {
