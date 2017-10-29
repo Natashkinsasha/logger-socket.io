@@ -7,6 +7,7 @@ describe('', function () {
     describe('', function () {
         it('', function (done) {
             socket.emit('fox', {tiger: 'tiger'}, function () {
+                console.log('dfsgs')
                 socket.emit('stork', {bear: 'bear'});
             });
             socket.on('frog', function () {

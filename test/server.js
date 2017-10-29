@@ -1,9 +1,13 @@
 const server = require('http').createServer();
-const io = require('socket.io')(server);
+const Server = require('socket.io');
 const winston = require('winston');
 const router = require('socket.io-events')();
 const tmp = require('../index');
 const winstonJsonevent = require('winston-jsonevent');
+
+const io = new Server({
+});
+const encode = io.encoder.encode;
 
 
 const logger = new (winston.Logger)({
@@ -20,8 +24,8 @@ const logger = new (winston.Logger)({
 io.of('/endpoint').use(tmp(logger));
 
 io.of('/endpoint').on('connection', function (client) {
-
     client.on('fox', function (tiger, ack) {
+        console.log('sdfgdgh')
         ack && ack(tiger, 'ddg');
     });
 
@@ -29,9 +33,9 @@ io.of('/endpoint').on('connection', function (client) {
         io.of('/endpoint').emit('frog', {bear: bear});
     });
 
-    client.on('disconnect', function(reason){
+    client.on('disconnecting', function (reason) {
         console.log('34456576')
     });
 });
 
-server.listen(3000);
+io.listen(3000);
