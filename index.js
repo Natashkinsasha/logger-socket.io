@@ -5,7 +5,7 @@ const types = {
     3: 'ACK',
     4: 'ERROR',
     5: 'BINARY_EVENT',
-    6: 'BINARY_ACK',
+    6: 'BINARY_ACK'
 };
 
 module.exports = function (options) {
@@ -14,23 +14,30 @@ module.exports = function (options) {
         console.log(message);
     };
     return function (socket, next) {
-        const encode = socket.server.parser.Encoder.prototype.encode;
-        socket.server.parser.Encoder.prototype.encode = function () {
-            const messsage = deepCopy(arguments[0]);
-            messsage.type = types[messsage.type];
-            messsage.kind = 'encoded';
-            log(messsage);
+        socket.client.encoder.encode = function () {
+            const message = deepCopy(arguments[0]);
+            message.type = types[message.type];
+            message.kind = 'encoded';
+            message.socket = {
+                id: socket.id,
+                handshake: socket.handshake
+            };
+            log(message);
             return encode.apply(this, arguments);
         };
 
-        const add = socket.server.parser.Decoder.prototype.add;
-        socket.server.parser.Decoder.prototype.add = function () {
+        const add = socket.client.decoder.add;
+        socket.client.decoder.add = function () {
             const emit = this.emit;
             this.emit = function () {
-                const messsage = deepCopy(arguments[1]);
-                messsage.type = types[messsage.type];
-                messsage.kind = 'decoded';
-                log(messsage);
+                const message = deepCopy(arguments[1]);
+                message.type = types[message.type];
+                message.kind = 'decoded';
+                message.socket = {
+                    id: socket.id,
+                    handshake: socket.handshake
+                };
+                log(message);
                 emit.apply(this, arguments);
             };
             return add.apply(this, arguments);

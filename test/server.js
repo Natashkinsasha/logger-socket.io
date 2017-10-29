@@ -7,7 +7,6 @@ const winstonJsonevent = require('winston-jsonevent');
 
 const io = new Server({
 });
-const encode = io.encoder.encode;
 
 
 const logger = new (winston.Logger)({
