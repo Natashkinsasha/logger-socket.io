@@ -14,6 +14,7 @@ module.exports = function (options) {
         console.log(message);
     };
     return function (socket, next) {
+        const encode = socket.client.encoder.encode;
         socket.client.encoder.encode = function () {
             const message = deepCopy(arguments[0]);
             message.type = types[message.type];
@@ -48,17 +49,5 @@ module.exports = function (options) {
 };
 
 const deepCopy = function (obj) {
-    if (typeof obj != "object") {
-        return obj;
-    }
-
-    var copy = obj.constructor();
-    for (var key in obj) {
-        if (typeof obj[key] == "object") {
-            copy[key] = deepCopy(obj[key]);
-        } else {
-            copy[key] = obj[key];
-        }
-    }
-    return copy;
+    return JSON.parse(JSON.stringify(obj));
 };
